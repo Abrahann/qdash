@@ -1,0 +1,23 @@
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>User Quotes</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a class='btn btn-secondary' href='/logout' type="submit">Logout</a>
+            <a class='back' href="/quotes">Back</a>
+        </div>
+        <div class="main_content">
+            <h5>{{first_name}} {{last_name}}'s Quotes</h5><br>
+            {% for quote in Quotes %}
+                <div class="box">
+                    <p>{{quote.author}}: "{{quote.quote}}"</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

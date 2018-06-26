@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>Quote Dashboard</title>
+</head>
+<body>
+    <div class="container">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <div class="header">
+            <h2>Welcome {{first_name}} {{last_name}}!</h2>
+            <a class='btn btn-secondary' href="/logout" type='submit'>Logout</a>
+            <a class='edit' href="/myaccount/{{request.session.user_id}}">Edit My Account</a>
+        </div>
+        <div class="main_content">
+            <div class="quotes">
+                <h5 class='title'>Quotes</h5>
+                {% for i in Quotes %}
+                    <div class="box">
+                        <p>{{ i.author }}: "{{ i.quote }}"</p>
+                        <p>Posted by <a href="user/{{i.uploader.id}}">{{i.uploader.first_name}} {{i.uploader.last_name}}</a> </p>
+                        <p>{{i.count_likes}} people liked this</p>
+                        {% if user not in i.liked_users.all %}
+                            {% if user.id != i.uploader.id %}
+                            <form action="like" method="post">
+                                {% csrf_token %}
+                                <input type='hidden' name="user_id" value="{{request.session.user_id}}">
+                                <input type='hidden' name="quote_id" value="{{i.id}}">
+                                <input type="submit" value="Like" class="btn btn-outline-primary btn-sm">
+                            </form>
+                            {% endif %}
+                        {% else %}
+                            <i class="liked">Liked!</i>
+                        {% endif %}
+                        {% if user.id == i.uploader.id %}
+                            <form action="delete" method="post">
+                                {% csrf_token %}
+                                <input type="submit" value='Delete' class='btn btn-link'>
+                                <input type='hidden' name="quote_id" value="{{i.id}}">
+                            </form>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="add_quotes">
+                <h5 class='title_add'>Add A Quote:</h5><br>
+                <form action="add" method="post">
+                    {% csrf_token %}
+                    Author: &nbsp;
+                    <input type="text" name="author" value=''><br><br>
+                    Quote: &nbsp;
+                    <textarea name="quote" cols="30" rows="5"></textarea><br>
+                    <button class='btn btn-success' type="submit">Submit</button>
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>

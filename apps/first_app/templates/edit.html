@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>Edit Account</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h5>Edit My Account</h5>
+        </div>
+        <div class="main_content">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <form action="update/{{id}}" method="post">
+                {% csrf_token %}
+                First Name:<br>
+                <input type="text" name="first_name" value="{{first_name}}"><br><br>
+                Last Name:<br>
+                <input type="text" name="last_name" value="{{last_name}}"><br><br>
+                Email:<br>
+                <input type="text" name="email" value="{{email}}"><br><br>
+                <button class='btn btn-primary' type="submit">Update</button>
+            </form>
+            <a class='btn btn-secondary' href="/logout" type='submit'>Logout</a>
+            <a class='back' href="/quotes">Back</a>
+        </div>
+    </div>
+</body>
+
+</html>
